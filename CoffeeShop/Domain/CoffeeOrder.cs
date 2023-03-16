@@ -2,11 +2,11 @@
 
 namespace CoffeeShop.Domain
 {
-    public class CoffeeOrder : ICoffeeOrder
+    public class CoffeeOrder : Order, ICoffeeOrder
     {
         public Coffee orderedCoffee { get; set; }
-        public CoffeeCalculator Calculator { get; set; }
         public List<string> Toppings { get; set; }
+        CoffeeCalculator Calculator { get; set; }   
 
         public CoffeeOrder(Coffee orderedCoffee)
         {
@@ -64,6 +64,13 @@ namespace CoffeeShop.Domain
             string UserInsert = Console.ReadLine();
             orderedCoffee.ServiceType = UserInsert;
             Calculator.CalculateServiceType(orderedCoffee);
+        }
+
+        public override void PrintTheBill()
+        {            
+            Console.WriteLine("Coffee name: {0}, Coffee type: {1},Servis type: {2}, Coffee price: {3}",
+               orderedCoffee.CoffeeName, orderedCoffee.CoffeeType,
+                orderedCoffee.ServiceType, orderedCoffee.Price);
         }
     }
 }
