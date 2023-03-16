@@ -1,19 +1,20 @@
-﻿
-using CoffeeShop.Interfaces;
+﻿using CoffeeShop.Interfaces;
 
 namespace CoffeeShop.Domain
 {
-    public class Order: IOrder
+    public class CoffeeOrder : ICoffeeOrder
     {
-        private Coffee orderedCoffee { get; set; }
-        private Calculator calculator { get; set; }
+        public Coffee orderedCoffee { get; set; }
+        public CoffeeCalculator Calculator { get; set; }
 
-        public Order(Coffee orderedCoffee)
+        public decimal TotalOrderPrice { get; set; }
+
+        public CoffeeOrder(Coffee orderedCoffee)
         {
             this.orderedCoffee = orderedCoffee;
-            calculator = new Calculator();
+            Calculator = new CoffeeCalculator();
         }
-        public void chooseCoffee()
+        public void ChooseCoffee()
         {
             int PickedCoffee;
             Console.WriteLine("Pick the coffee - choose the number");
@@ -23,12 +24,12 @@ namespace CoffeeShop.Domain
                 Console.WriteLine("{0}. {1}", (int)value, value.ToString());
             }
 
-            PickedCoffee = Int32.Parse(Console.ReadLine());
+            PickedCoffee = int.Parse(Console.ReadLine());
             orderedCoffee.CoffeeName = (CoffeeName)PickedCoffee;
-            calculator.calculateCoffeePrice(orderedCoffee);
+            TotalOrderPrice = Calculator.CalculateCoffeePrice(orderedCoffee);
         }
 
-        public void chooseCoffeeType()
+        public void ChooseCoffeeType()
         {
             int PickedCoffeeType;
             Console.WriteLine("Pick the coffee type");
@@ -38,9 +39,9 @@ namespace CoffeeShop.Domain
                 Console.WriteLine("{0}. {1}", (int)value, value.ToString());
             }
 
-            PickedCoffeeType = Int32.Parse(Console.ReadLine());
+            PickedCoffeeType = int.Parse(Console.ReadLine());
             orderedCoffee.CoffeeType = (CoffeeType)PickedCoffeeType;
-            calculator.calculateCoffeeType(orderedCoffee);
+            TotalOrderPrice = Calculator.CalculateCoffeeType(orderedCoffee);
         }
     }
 }

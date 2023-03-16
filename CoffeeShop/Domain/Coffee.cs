@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CoffeeShop.Domain
+﻿namespace CoffeeShop.Domain
 {
     public class Coffee
     {
@@ -12,10 +6,10 @@ namespace CoffeeShop.Domain
 
         public CoffeeType CoffeeType { get; set; }
 
-        public double Price { get; set; }
+        public decimal Price { get; set; }
 
-        public void incrementPrice(double IncrementValue) {
-            this.Price += IncrementValue;
+        public void IncrementCoffeePrice(decimal ValueToIncrement) { 
+            Price += ValueToIncrement;
         }
     }
 }
