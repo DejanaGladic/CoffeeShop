@@ -12,7 +12,7 @@ namespace CoffeeShop.Domain
         }
         public decimal CalculateCoffeePrice(Coffee orderedCoffee)
         {
-            decimal AddPrice;
+            decimal AddPrice = 0;
             switch (orderedCoffee.CoffeeName)
             {
                 case CoffeeName.Espresso:
@@ -40,6 +40,31 @@ namespace CoffeeShop.Domain
                 return OrderCalculator.CalculateTotalPrice(0.7m);
             }
             return OrderCalculator.CalculateTotalPrice(0);
+        }
+
+        public decimal CalculateToppings(Coffee orderedCoffee)
+        {
+            decimal AddPrice = 0;
+            foreach (string Topping in orderedCoffee.Toppings)
+            {
+                switch (Topping)
+                {
+                    case "Milk":
+                        AddPrice += PriceList.Milk;
+                        break;
+                    case "Cinnamon":
+                        AddPrice += PriceList.Cinnamon;
+                        break;
+                    case "BrownSugar":
+                        AddPrice += PriceList.BrownSugar;
+                        break;
+                    default:
+                        AddPrice = 0;
+                        break;
+                }
+            }
+            orderedCoffee.IncrementCoffeePrice(AddPrice);
+            return OrderCalculator.CalculateTotalPrice(AddPrice);
         }
     }
 }

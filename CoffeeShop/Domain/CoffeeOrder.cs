@@ -6,13 +6,14 @@ namespace CoffeeShop.Domain
     {
         public Coffee orderedCoffee { get; set; }
         public CoffeeCalculator Calculator { get; set; }
-
+        public List<string> Toppings { get; set; }
         public decimal TotalOrderPrice { get; set; }
 
         public CoffeeOrder(Coffee orderedCoffee)
         {
             this.orderedCoffee = orderedCoffee;
             Calculator = new CoffeeCalculator();
+            Toppings = new List<string>();  
         }
         public void ChooseCoffee()
         {
@@ -42,6 +43,20 @@ namespace CoffeeShop.Domain
             PickedCoffeeType = int.Parse(Console.ReadLine());
             orderedCoffee.CoffeeType = (CoffeeType)PickedCoffeeType;
             TotalOrderPrice = Calculator.CalculateCoffeeType(orderedCoffee);
+        }
+
+        public void ChooseToppings()
+        {
+            Console.WriteLine("Insert the toppings: Milk, Cinnamon, BrownSugar");
+            Console.WriteLine("Stop for finish insertion");
+            string UserInsert = Console.ReadLine();
+            while (!UserInsert.Equals("stop"))
+            {
+                Toppings.Add(UserInsert);
+                UserInsert = Console.ReadLine();
+            }
+            orderedCoffee.Toppings = Toppings;
+            TotalOrderPrice = Calculator.CalculateToppings(orderedCoffee);
         }
     }
 }

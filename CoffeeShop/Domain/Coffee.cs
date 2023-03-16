@@ -8,6 +8,8 @@
 
         public decimal Price { get; set; }
 
+        public List<string> Toppings { get; set; }
+
         public void IncrementCoffeePrice(decimal ValueToIncrement) { 
             Price += ValueToIncrement;
         }
