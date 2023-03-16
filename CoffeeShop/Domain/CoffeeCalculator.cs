@@ -10,7 +10,7 @@ namespace CoffeeShop.Domain
         public CoffeeCalculator() {
             OrderCalculator = new OrderCalculator();
         }
-        public decimal CalculateCoffeePrice(Coffee orderedCoffee)
+        public void CalculateCoffeePrice(Coffee orderedCoffee)
         {
             decimal AddPrice = 0;
             switch (orderedCoffee.CoffeeName)
@@ -28,21 +28,17 @@ namespace CoffeeShop.Domain
                     AddPrice = 0;
                 break;
             }
-            orderedCoffee.IncrementCoffeePrice(AddPrice);
-
-            return OrderCalculator.CalculateTotalPrice(AddPrice);
+            orderedCoffee.Price = OrderCalculator.CalculateTotalPrice(AddPrice);
         }
 
-        public decimal CalculateCoffeeType(Coffee orderedCoffee)
+        public void CalculateCoffeeType(Coffee orderedCoffee)
         {
             if (CoffeeType.Large == orderedCoffee.CoffeeType) {
-                orderedCoffee.IncrementCoffeePrice(0.7m);
-                return OrderCalculator.CalculateTotalPrice(0.7m);
+                orderedCoffee.Price = OrderCalculator.CalculateTotalPrice(0.7m);
             }
-            return OrderCalculator.CalculateTotalPrice(0);
         }
 
-        public decimal CalculateToppings(Coffee orderedCoffee)
+        public void CalculateToppings(Coffee orderedCoffee)
         {
             decimal AddPrice = 0;
             foreach (string Topping in orderedCoffee.Toppings)
@@ -63,8 +59,25 @@ namespace CoffeeShop.Domain
                         break;
                 }
             }
-            orderedCoffee.IncrementCoffeePrice(AddPrice);
-            return OrderCalculator.CalculateTotalPrice(AddPrice);
+            orderedCoffee.Price = OrderCalculator.CalculateTotalPrice(AddPrice);
+        }
+
+        public void CalculateServiceType(Coffee orderedCoffee)
+        {
+            switch (orderedCoffee.ServiceType)
+            {
+                case "coupon code":
+                    orderedCoffee.Price = OrderCalculator.CalculateDiscount(5);
+                    break;
+                case "take away":
+                    if (orderedCoffee.Price < 7m)
+                    {
+                        orderedCoffee.Price = OrderCalculator.CalculateIncrease(2);
+                    }                   
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

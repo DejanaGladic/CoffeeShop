@@ -7,7 +7,6 @@ namespace CoffeeShop.Domain
         public Coffee orderedCoffee { get; set; }
         public CoffeeCalculator Calculator { get; set; }
         public List<string> Toppings { get; set; }
-        public decimal TotalOrderPrice { get; set; }
 
         public CoffeeOrder(Coffee orderedCoffee)
         {
@@ -27,7 +26,7 @@ namespace CoffeeShop.Domain
 
             PickedCoffee = int.Parse(Console.ReadLine());
             orderedCoffee.CoffeeName = (CoffeeName)PickedCoffee;
-            TotalOrderPrice = Calculator.CalculateCoffeePrice(orderedCoffee);
+            Calculator.CalculateCoffeePrice(orderedCoffee);
         }
 
         public void ChooseCoffeeType()
@@ -42,7 +41,7 @@ namespace CoffeeShop.Domain
 
             PickedCoffeeType = int.Parse(Console.ReadLine());
             orderedCoffee.CoffeeType = (CoffeeType)PickedCoffeeType;
-            TotalOrderPrice = Calculator.CalculateCoffeeType(orderedCoffee);
+            Calculator.CalculateCoffeeType(orderedCoffee);
         }
 
         public void ChooseToppings()
@@ -56,7 +55,15 @@ namespace CoffeeShop.Domain
                 UserInsert = Console.ReadLine();
             }
             orderedCoffee.Toppings = Toppings;
-            TotalOrderPrice = Calculator.CalculateToppings(orderedCoffee);
+            Calculator.CalculateToppings(orderedCoffee);
+        }
+
+        internal void ChooseServiceType()
+        {
+            Console.WriteLine("Insert the service type: in-house, coupon code or take away");
+            string UserInsert = Console.ReadLine();
+            orderedCoffee.ServiceType = UserInsert;
+            Calculator.CalculateServiceType(orderedCoffee);
         }
     }
 }
