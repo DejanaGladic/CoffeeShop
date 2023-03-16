@@ -6,6 +6,6 @@
 
         public decimal CalculateDiscount(decimal Discount);
 
-        public decimal CalculateIncrease(decimal Increase)
+        public decimal CalculateIncrease(decimal Increase);
     }
 }
