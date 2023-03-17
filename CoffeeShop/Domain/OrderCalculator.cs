@@ -4,19 +4,19 @@ namespace CoffeeShop.Domain
 {
     public class OrderCalculator : ICalculator
     {
-        public decimal CalculatedPrice { get; set; }
-        public decimal CalculateTotalPrice(decimal Price)
+        public decimal calculatedPrice { get; set; }
+        public decimal CalculateTotalPrice(decimal price)
         {
-            return CalculatedPrice += Price;
+            return calculatedPrice += price;
         }
-        public decimal CalculateDiscount(decimal Discount)
+        public decimal CalculateDiscount(decimal discount)
         {
-            return CalculatedPrice *= (100-Discount)/100;
+            return calculatedPrice *= (100-discount)/100;
         }
 
-        public decimal CalculateIncrease(decimal Increase)
+        public decimal CalculateIncrease(decimal increase)
         {
-            return CalculatedPrice *= (100 + Increase) / 100;
+            return calculatedPrice *= (100 + increase) / 100;
         }
     }
 }

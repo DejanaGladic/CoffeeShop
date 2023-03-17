@@ -1,78 +1,78 @@
 ﻿
 using CoffeeShop.Data;
+using CoffeeShop.Interfaces;
 
 namespace CoffeeShop.Domain
 {
     public class CoffeeCalculator
     {
-        public OrderCalculator OrderCalculator { get; set; }
-        public PriceList PriceList = new PriceList();
-        public CoffeeCalculator() {
-            OrderCalculator = new OrderCalculator();
+        public ICalculator _calculator { get; set; }
+        public CoffeeCalculator(ICalculator calculator) {
+            _calculator = calculator;
         }
-        public void CalculateCoffeePrice(Coffee orderedCoffee)
+        public void CalculateCoffeePrice(ICoffee orderedCoffee)
         {
-            decimal AddPrice = 0;
+            decimal addPrice;
             switch (orderedCoffee.CoffeeName)
             {
                 case CoffeeName.Espresso:
-                    AddPrice = PriceList.EspressoPrice;
+                    addPrice = PriceList.espressoPrice;
                 break;
                 case CoffeeName.Cappuccino:
-                    AddPrice = PriceList.CappuccinoPrice;
+                    addPrice = PriceList.cappuccinoPrice;
                 break;
                 case CoffeeName.LatteMacchiato:
-                    AddPrice = PriceList.LatteMacchiato;
+                    addPrice = PriceList.latteMacchiato;
                 break;
                 default:
-                    AddPrice = 0;
+                    addPrice = 0;
                 break;
             }
-            orderedCoffee.Price = OrderCalculator.CalculateTotalPrice(AddPrice);
+            orderedCoffee.Price = _calculator.CalculateTotalPrice(addPrice);
         }
 
-        public void CalculateCoffeeType(Coffee orderedCoffee)
+        public void CalculateCoffeeType(ICoffee orderedCoffee)
         {
             if (CoffeeType.Large == orderedCoffee.CoffeeType) {
-                orderedCoffee.Price = OrderCalculator.CalculateTotalPrice(0.7m);
+                orderedCoffee.Price = _calculator.CalculateTotalPrice(0.7m);
             }
         }
 
-        public void CalculateToppings(Coffee orderedCoffee)
+        public void CalculateToppings(ICoffee orderedCoffee)
         {
-            decimal AddPrice = 0;
-            foreach (string Topping in orderedCoffee.Toppings)
+            decimal addPrice = 0;
+            foreach (string topping in orderedCoffee.Toppings)
             {
-                switch (Topping)
+                switch (topping)
                 {
-                    case "Milk":
-                        AddPrice += PriceList.Milk;
+                    case "milk":
+                        addPrice += PriceList.milk;
                         break;
-                    case "Cinnamon":
-                        AddPrice += PriceList.Cinnamon;
+                    case "cinnamon":
+                        addPrice += PriceList.cinnamon;
                         break;
-                    case "BrownSugar":
-                        AddPrice += PriceList.BrownSugar;
+                    case "brownsugar":
+                        addPrice += PriceList.brownSugar;
                         break;
                     default:
-                        AddPrice = 0;
+                        addPrice = 0;
                         break;
                 }
             }
-            orderedCoffee.Price = OrderCalculator.CalculateTotalPrice(AddPrice);
+            orderedCoffee.Price = _calculator.CalculateTotalPrice(addPrice);
         }
 
-        public void CalculateServiceType(Coffee orderedCoffee)
+        public void CalculateServiceType(ICoffee orderedCoffee)
         {
             switch (orderedCoffee.ServiceType)
             {
-                case "coupon code":
-                    orderedCoffee.Price = OrderCalculator.CalculateDiscount(5);
+                case "couponcode":
+                    orderedCoffee.Price = _calculator.CalculateDiscount(PriceList.discount);
                     break;
-                case "take away":
-                    if (orderedCoffee.Price < 7m)
+                case "takeaway":
+                    if (orderedCoffee.Price < PriceList.totalPriceBound)
                     {
-                        orderedCoffee.Price = OrderCalculator.CalculateIncrease(2);
+                        orderedCoffee.Price = _calculator.CalculateIncrease(PriceList.increase);
                     }                   
                     break;
                 default:

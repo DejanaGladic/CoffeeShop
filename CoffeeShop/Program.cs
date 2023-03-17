@@ -1,12 +1,13 @@
-﻿using CoffeeShop.Domain;
+﻿using CoffeeShop.Factory;
+using CoffeeShop.Interfaces;
 
-Coffee orderedCoffee = new Coffee();
-CoffeeOrder Order = new CoffeeOrder(orderedCoffee);
-Order.ChooseCoffee();
-Order.ChooseCoffeeType();
-Order.ChooseToppings();
-Order.ChooseServiceType();
-Order.PrintTheBill();
+
+ICoffeeOrder order = Factory.CreateCoffeeOrder();
+order.ChooseCoffee();
+order.ChooseCoffeeType();
+order.ChooseToppings();
+order.ChooseServiceType();
+order.PrintTheBill();
 
 
 

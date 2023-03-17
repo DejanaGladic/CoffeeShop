@@ -2,17 +2,14 @@
 
 namespace CoffeeShop.Domain
 {
-    public class CoffeeOrder : Order, ICoffeeOrder
+    public class CoffeeOrder : ICoffeeOrder
     {
-        public Coffee orderedCoffee { get; set; }
-        public List<string> Toppings { get; set; }
-        CoffeeCalculator Calculator { get; set; }   
-
-        public CoffeeOrder(Coffee orderedCoffee)
+        public ICoffee _orderedCoffee;
+        CoffeeCalculator _coffeeCalculator;
+        public CoffeeOrder(ICoffee orderedCoffee, CoffeeCalculator coffeeCalculator)
         {
-            this.orderedCoffee = orderedCoffee;
-            Calculator = new CoffeeCalculator();
-            Toppings = new List<string>();  
+            _orderedCoffee = orderedCoffee;
+            _coffeeCalculator = coffeeCalculator;
         }
         public void ChooseCoffee()
         {
@@ -25,8 +22,8 @@ namespace CoffeeShop.Domain
             }
 
             PickedCoffee = int.Parse(Console.ReadLine());
-            orderedCoffee.CoffeeName = (CoffeeName)PickedCoffee;
-            Calculator.CalculateCoffeePrice(orderedCoffee);
+            _orderedCoffee.CoffeeName = (CoffeeName)PickedCoffee;
+            _coffeeCalculator.CalculateCoffeePrice(_orderedCoffee);
         }
 
         public void ChooseCoffeeType()
@@ -40,37 +37,38 @@ namespace CoffeeShop.Domain
             }
 
             PickedCoffeeType = int.Parse(Console.ReadLine());
-            orderedCoffee.CoffeeType = (CoffeeType)PickedCoffeeType;
-            Calculator.CalculateCoffeeType(orderedCoffee);
+            _orderedCoffee.CoffeeType = (CoffeeType)PickedCoffeeType;
+            _coffeeCalculator.CalculateCoffeeType(_orderedCoffee);
         }
 
         public void ChooseToppings()
         {
-            Console.WriteLine("Insert the toppings: Milk, Cinnamon, BrownSugar");
+            IEnumerable<string> toppings = new List<string>();
+            Console.WriteLine("Insert the toppings: Milk, Cinnamon, Brown Sugar");
             Console.WriteLine("Stop for finish insertion");
-            string UserInsert = Console.ReadLine();
-            while (!UserInsert.Equals("stop"))
+            string userInsert = Console.ReadLine().Trim().Replace(" ", "").ToLower();
+            while (!userInsert.Equals("stop"))
             {
-                Toppings.Add(UserInsert);
-                UserInsert = Console.ReadLine();
+                ((List<string>)toppings).Add(userInsert);
+                userInsert = Console.ReadLine().Trim().Replace(" ", "").ToLower();
             }
-            orderedCoffee.Toppings = Toppings;
-            Calculator.CalculateToppings(orderedCoffee);
+            _orderedCoffee.Toppings = toppings;
+            _coffeeCalculator.CalculateToppings(_orderedCoffee);
         }
 
-        internal void ChooseServiceType()
+        public void ChooseServiceType()
         {
             Console.WriteLine("Insert the service type: in-house, coupon code or take away");
-            string UserInsert = Console.ReadLine();
-            orderedCoffee.ServiceType = UserInsert;
-            Calculator.CalculateServiceType(orderedCoffee);
+            string UserInsert = Console.ReadLine().Trim().Replace(" ", "").ToLower();
+            _orderedCoffee.ServiceType = UserInsert;
+            _coffeeCalculator.CalculateServiceType(_orderedCoffee);
         }
 
-        public override void PrintTheBill()
+        public void PrintTheBill()
         {            
             Console.WriteLine("Coffee name: {0}, Coffee type: {1},Servis type: {2}, Coffee price: {3}",
-               orderedCoffee.CoffeeName, orderedCoffee.CoffeeType,
-                orderedCoffee.ServiceType, orderedCoffee.Price);
+               _orderedCoffee.CoffeeName, _orderedCoffee.CoffeeType,
+                _orderedCoffee.ServiceType, _orderedCoffee.Price);
         }
     }
 }

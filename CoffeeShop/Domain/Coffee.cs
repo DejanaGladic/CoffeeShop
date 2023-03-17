@@ -1,12 +1,14 @@
-﻿namespace CoffeeShop.Domain
+﻿using CoffeeShop.Interfaces;
+
+namespace CoffeeShop.Domain
 {
-    public class Coffee
+    public class Coffee : ICoffee
     {
         public CoffeeName CoffeeName { get; set; }
 
         public CoffeeType CoffeeType { get; set; }
 
-        public List<string> Toppings { get; set; }
+        public IEnumerable<string> Toppings { get; set; }
 
         public string ServiceType { get; set; }
 
